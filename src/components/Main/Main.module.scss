@@ -86,6 +86,7 @@
 
 .optional_text {
   margin: 0.5rem 0 1rem;
+  color: var(--text-secondary);
 }
 
 .border_text {
@@ -137,7 +138,6 @@
   .optional_text {
     display: block;
     margin-top: 1rem;
-    color: var(--text-secondary);
   }
   .placeholder_text,
   .return_text {
