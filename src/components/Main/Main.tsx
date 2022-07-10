@@ -4,6 +4,7 @@ import arrow from '../../static/img/arrow.svg';
 import placeholder_light from '../../static/img/placeholder_light.svg';
 import placeholder_dark from '../../static/img/placeholder_dark.svg';
 import Input from '../UI/Input.file/Input.file';
+import { convertImageToTextMock } from '../../api/api_calls';
 
 const Main = ({ theme }: { theme: string }) => {
   const [text, setText] = useState<string>();
@@ -11,6 +12,7 @@ const Main = ({ theme }: { theme: string }) => {
   const [filePreview, setFilePreview] = useState<string>();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //полчему ts игнорирует проверку на null?
     if (e !== null && e) {
       setFilePreview(URL.createObjectURL(e!.target!.files![0]));
       setFile(e!.target!.files![0]);
@@ -19,10 +21,17 @@ const Main = ({ theme }: { theme: string }) => {
 
   useEffect(() => {
     if (file) {
-      setText('конвертированный текст');
-      console.log('FILE CHANGED');
+      console.log('Файл загружен');
+      const formData = new FormData();
+      formData.append('image', file, file.name);
+      console.log(`Файл подготовлен для отправки на api: `);
+      console.log(formData.getAll('image'));
+      convertImageToTextMock().then((res) => {
+        console.log(`Получен ответ от api: ${res.data[0].text}`);
+        setText(res.data[0].text);
+      });
     }
-  }, [file, filePreview]);
+  }, [file]);
 
   return (
     <main className={s.container}>
