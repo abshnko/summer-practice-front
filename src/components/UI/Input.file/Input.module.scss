@@ -1,9 +1,16 @@
-.button {
+label {
   border-radius: 100vmax;
   background-color: var(--accent);
   width: fit-content;
   color: white;
-  padding: 0.7em 1.5em;
+  padding: 0.5em 1.5em 0.7em;
   font-size: clamp(0.85rem, 1.5vw, 1.1rem);
   letter-spacing: 0.8px;
+  cursor: pointer;
+}
+
+.upload_photo {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
 }
