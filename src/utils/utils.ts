@@ -5,3 +5,11 @@ export const switchTheme = (
   const newTheme = theme === 'light' ? 'dark' : 'light';
   setTheme(newTheme);
 };
+
+//create unique id
+export const uid = () => {
+  return (
+    Date.now() +
+    Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12))
+  );
+};

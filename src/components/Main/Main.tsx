@@ -4,7 +4,8 @@ import arrow from '../../static/img/arrow.svg';
 import placeholder_light from '../../static/img/placeholder_light.svg';
 import placeholder_dark from '../../static/img/placeholder_dark.svg';
 import Input from '../UI/Input.file/Input.file';
-import { convertImageToTextMock } from '../../api/api_calls';
+import { uploadImage } from '../../api/api_calls';
+import { uid } from '../../utils/utils';
 
 const Main = ({ theme }: { theme: string }) => {
   const [text, setText] = useState<string>();
@@ -12,23 +13,16 @@ const Main = ({ theme }: { theme: string }) => {
   const [filePreview, setFilePreview] = useState<string>();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //полчему ts игнорирует проверку на null?
-    if (e !== null && e) {
-      setFilePreview(URL.createObjectURL(e!.target!.files![0]));
-      setFile(e!.target!.files![0]);
+    if (e.target.files !== null) {
+      setFilePreview(URL.createObjectURL(e.target.files[0]));
+      setFile(e.target.files[0]);
     }
   };
 
   useEffect(() => {
     if (file) {
-      console.log('Файл загружен');
-      const formData = new FormData();
-      formData.append('image', file, file.name);
-      console.log(`Файл подготовлен для отправки на api: `);
-      console.log(formData.getAll('image'));
-      convertImageToTextMock().then((res) => {
-        console.log(`Получен ответ от api: ${res.data[0].text}`);
-        setText(res.data[0].text);
+      uploadImage(file, uid()).then((res) => {
+        console.log('File uploaded. Response: ', res);
       });
     }
   }, [file]);
@@ -55,6 +49,7 @@ const Main = ({ theme }: { theme: string }) => {
           ) : (
             <>
               <img className={s.img_selected} src={filePreview} alt="" />
+              {/* <img src={imageFromApi().then((res)=>res.data)} alt="" /> */}
               <Input handleChange={handleChange} />
             </>
           )}

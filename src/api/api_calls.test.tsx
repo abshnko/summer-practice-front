@@ -1,20 +1,35 @@
 import axios from 'axios';
-import { convertImageToTextMock } from './api_calls';
+import { getImages, uploadImage } from './api_calls';
 
 jest.mock('axios');
 
 describe('api calls', () => {
-  it('should return text from image', async () => {
+  it('should get images', async () => {
     (axios.get as jest.Mock).mockResolvedValue({
       data: [
         {
           id: '1',
           image: 'image blob',
-          text: 'Конвертированный текст, который получен через api',
         },
       ],
     });
-    const res = await convertImageToTextMock();
+    const res = await getImages();
     expect(res.data[0].image).toEqual('image blob');
+  });
+
+  it('should upload image', async () => {
+    (axios.post as jest.Mock).mockResolvedValue({
+      status: 201,
+      data: [
+        {
+          id: '1',
+          image: 'image',
+        },
+      ],
+    });
+
+    const file = new File([''], 'filename', { type: 'multipart/formdata' });
+    const res = await uploadImage(file, 10);
+    expect(res.status).toEqual(201);
   });
 });
