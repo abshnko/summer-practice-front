@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react';
-import Main from './Main';
+import ScanPage from './ScanPage';
 
-describe('Main', () => {
-  it('should render Main component', () => {
-    const { getByText } = render(<Main theme={'light'} />);
+describe('ScanPage', () => {
+  it('should render ScanPage component', () => {
+    const { getByText } = render(<ScanPage />);
     const button = getByText(/Выберите изображение/i);
     const text = getByText(/или перетащите сюда/i);
     const outputText = getByText(

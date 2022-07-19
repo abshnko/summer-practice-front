@@ -4,7 +4,6 @@
   justify-content: center;
   margin-top: 60px;
   height: calc(100vh - 60px);
-  padding-inline: 2rem;
   align-items: center;
   background-color: var(--background);
   padding: 2rem;
@@ -14,7 +13,6 @@
 .output {
   border-radius: 40px;
   min-height: 200px;
-
   width: 100%;
   background-color: var(--item-bg);
   display: flex;
@@ -69,7 +67,18 @@
 
 .arrow {
   margin-block: 1rem;
-  filter: var(--svg-filter);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  //   filter: var(--svg-filter);
+  //   position: relative;
+  .warn {
+    margin-top: 5px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
 }
 
 .placeholder_text,
@@ -105,7 +114,22 @@
   .input,
   .output {
     height: calc(100vh - 60px - 30%);
-    width: 45%;
+    width: 40%;
+  }
+
+  .arrow {
+    margin-inline: 4rem;
+    width: 15%;
+    // filter: var(--svg-filter);
+    min-height: 150px;
+    position: relative;
+
+    .warn {
+      position: absolute;
+      top: 10px;
+      text-align: center;
+      color: var(--text-secondary);
+    }
   }
 
   .border {
@@ -130,11 +154,6 @@
     justify-content: center;
   }
 
-  .arrow {
-    margin-inline: 4rem;
-    filter: var(--svg-filter);
-    transform: rotate(270deg);
-  }
   .optional_text {
     display: block;
     margin-top: 1rem;

@@ -3,21 +3,31 @@ import arrow_small_black from '../../static/img/header_icons/arrow_right_small.s
 import sun from '../../static/img/header_icons/sun.svg';
 import moon from '../../static/img/header_icons/moon.svg';
 import tg from '../../static/img/header_icons/telegram.svg';
+import { Link } from 'react-router-dom';
+import { switchTheme } from '../../utils/utils';
+import { useThemeContext } from '../../context/theme.context';
 
 interface IHeader {
   switchTheme: (theme: string) => void;
   theme: string;
+  setTheme: any;
 }
 
-const Header = ({ switchTheme, theme }: IHeader) => {
+const Header = () => {
+  const { theme, setTheme } = useThemeContext();
+
   return (
     <header className={s.navbar}>
-      <div className={s.logo}>
-        <span className={s.italic_logo}>текст</span>
-        <img className={s.arrow_icon} src={arrow_small_black} alt="THEME" />
-        <span className={s.regular}>текст</span>
-      </div>
+      <Link to={'/'}>
+        <div className={s.logo}>
+          <span className={s.italic_logo}>текст</span>
+          <img className={s.arrow_icon} src={arrow_small_black} alt="THEME" />
+          <span className={s.regular}>текст</span>
+        </div>
+      </Link>
       <div className={s.right_side}>
+        <div className={s.link}>О сайте</div>
+        <div className={s.link}>История</div>
         <div className={s.tg_icon_container}>
           <a href="/">
             <div className={s.tg_icon}>
@@ -28,7 +38,7 @@ const Header = ({ switchTheme, theme }: IHeader) => {
         </div>
 
         <div
-          onClick={() => switchTheme(theme)}
+          onClick={() => switchTheme(theme, setTheme)}
           className={`${s.theme_icon} ${
             theme === 'light' ? s.theme_icon_light : s.theme_icon_dark
           }`}
