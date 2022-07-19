@@ -1,11 +1,11 @@
 label {
   border-radius: 100vmax;
-  background-color: var(--accent);
+  //   background-color: #22536f;
+  background-color: var(--accent-side);
   width: fit-content;
-  color: white;
   padding: 0.5em 1.5em 0.7em;
+  color: var(--input-text);
   font-size: clamp(0.85rem, 1.5vw, 1.1rem);
-  //   letter-spacing: 0.8px;
   cursor: pointer;
 }
 

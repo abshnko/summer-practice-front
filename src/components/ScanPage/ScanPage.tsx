@@ -65,7 +65,6 @@ const ScanPage = () => {
             ) : (
               <>
                 <img className={s.img_selected} src={filePreview} alt="" />
-                {/* <img src={imageFromApi().then((res)=>res.data)} alt="" /> */}
                 <Input handleChange={handleChange} />
               </>
             )}
