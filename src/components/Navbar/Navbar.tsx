@@ -29,7 +29,7 @@ const Header = () => {
         <div className={s.link}>О сайте</div>
         <div className={s.link}>История</div>
         <div className={s.tg_icon_container}>
-          <a href="/">
+          <a href="https://t.me/HTR_test_bot">
             <div className={s.tg_icon}>
               <img src={tg} alt="tg" />
             </div>
