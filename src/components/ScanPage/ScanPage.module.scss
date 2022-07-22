@@ -20,6 +20,10 @@
   justify-content: center;
 }
 
+.drag_active {
+  background-color: var(--item-bg-onDrag);
+}
+
 .border {
   border-radius: inherit;
   display: flex;
@@ -103,6 +107,13 @@
   align-items: flex-start;
   padding: 1rem;
   overflow-y: auto;
+}
+
+.history_btn {
+  align-self: flex-start;
+  color: rgb(102, 102, 102);
+  text-decoration: underline;
+  margin-top: 1rem;
 }
 
 @media (min-width: 800px) {

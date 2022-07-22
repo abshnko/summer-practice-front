@@ -40,6 +40,7 @@ button {
   --accent-side: #22536f;
   --accent-secondary: #00488b;
   --item-bg: #f0f7ff;
+  --item-bg-onDrag: #dcecfe;
   --text-bg: white;
   --navbar-bg: white;
   --item-border: #595959;
@@ -48,7 +49,7 @@ button {
 }
 
 [data-theme='dark'] {
-  --background: #494949;
+  --background: #1a1a1a;
   --text-primary: #fff;
   --text-secondary: #9d9d9d;
   --input-text: black;
@@ -57,8 +58,9 @@ button {
   --accent-side: rgb(223, 223, 223);
   --accent-secondary: #fff;
   --item-bg: #005f7c;
-  --text-bg: #424242;
-  --navbar-bg: #494949;
+  --item-bg-onDrag: #005068;
+  --text-bg: #242424;
+  --navbar-bg: #1a1a1a;
   --item-border: #f1f1f1;
   --scrollbar: #747474;
   --svg-filter: brightness(0) saturate(100%) invert(100%) sepia(100%)

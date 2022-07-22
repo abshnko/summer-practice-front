@@ -10,7 +10,8 @@ label {
 }
 
 .upload_photo {
-  opacity: 0;
-  position: absolute;
-  z-index: -1;
+  //   opacity: 0;
+  display: none;
+  //   position: absolute;
+  //   z-index: -1;
 }

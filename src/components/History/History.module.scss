@@ -1,0 +1,28 @@
+.container {
+  position: fixed;
+  top: 62px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: inherit;
+  background-color: var(--background);
+  z-index: 1;
+  padding: 1rem;
+
+  display: flex;
+}
+
+.left_side {
+  width: 10%;
+}
+
+.title {
+  font-size: clamp(1.2rem, 3vw, 1.4rem);
+}
+
+@media (min-width: 500px) {
+  .container {
+    width: 20%;
+    position: static;
+  }
+}
