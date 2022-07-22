@@ -9,7 +9,7 @@ export const switchTheme = (
 //create unique id
 export const uid = () => {
   return (
-    Date.now() +
-    Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12))
+    parseInt(Date.now().toString().slice(0, 5)) +
+    Math.floor(Math.pow(10, 4) + Math.random() * 9 * Math.pow(10, 2))
   );
 };
