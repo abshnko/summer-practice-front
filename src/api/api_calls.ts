@@ -16,5 +16,5 @@ export const uploadImage = async (file: File, id: number) => {
   };
   const url = `http://176.53.160.122:8000/api/upload?file_id=${id}`;
 
-  return axios.post(url, formData, config);
+  return axios.post(url, formData);
 };
