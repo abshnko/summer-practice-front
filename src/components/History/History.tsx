@@ -29,7 +29,22 @@ const History = ({
 
   if (history.length < 1) {
     return (
-      <div className={s.container}>
+      <motion.div
+        key="mobile nav"
+        initial={{
+          opacity: 0,
+        }}
+        animate={{
+          opacity: 1,
+          x: [-150, 0],
+        }}
+        transition={{
+          duration: 0.2,
+          type: 'spring',
+        }}
+        //   exit={{ x: [0, -50] }}
+        className={s.container}
+      >
         <div className={s.title_container}>
           <div className={s.title}>История</div>
           <div onClick={() => setShowHistory(false)} className={s.close}>
@@ -39,7 +54,7 @@ const History = ({
         <div className={s.placeholder_cont}>
           <div className={s.placeholder}>Здесь пока пусто</div>
         </div>
-      </div>
+      </motion.div>
     );
   }
   return (
