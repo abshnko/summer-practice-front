@@ -18,3 +18,9 @@ export const uploadImage = async (file: File, id: number) => {
 
   return axios.post(url, formData);
 };
+
+export const predictText = async (id: number) => {
+  const url = `http://176.53.160.122:8000/api/predict?file_id=${id}`;
+
+  return axios.post(url);
+};

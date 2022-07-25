@@ -110,10 +110,11 @@
 }
 
 .history_btn {
-  align-self: flex-start;
+  //   align-self: flex-start;
   color: rgb(102, 102, 102);
-  text-decoration: underline;
+  //   text-decoration: underline;
   margin-top: 1rem;
+  cursor: pointer;
 }
 
 @media (min-width: 800px) {
@@ -122,6 +123,10 @@
     padding-inline: 2rem;
     justify-content: space-around;
   }
+  .with_history {
+    justify-content: left !important;
+    padding-left: 0 !important;
+  }
   .input,
   .output {
     height: calc(100vh - 60px - 30%);
@@ -129,15 +134,15 @@
   }
 
   .arrow {
-    margin-inline: 4rem;
-    width: 15%;
+    margin-inline: 1rem;
+    width: fit-content;
     // filter: var(--svg-filter);
     min-height: 150px;
     position: relative;
 
     .warn {
       position: absolute;
-      top: 10px;
+      top: -20px;
       text-align: center;
       color: var(--text-secondary);
     }
@@ -177,12 +182,21 @@
 
 @media (min-width: 1000px) {
   .container {
-    padding-inline: 10rem;
+    // padding-inline: 10rem;
     justify-content: center;
   }
   .input,
   .output {
     height: calc(100vh - 60px - 30%);
-    width: 35%;
+    width: 40%;
+  }
+}
+
+@media (min-width: 1600px) {
+  .container {
+    padding-inline: 10rem;
+  }
+  .arrow {
+    margin-inline: 3rem;
   }
 }

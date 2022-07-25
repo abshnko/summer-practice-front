@@ -4,20 +4,21 @@ import arrow from '../../static/img/arrow.svg';
 import placeholder_light from '../../static/img/placeholder_light.svg';
 import placeholder_dark from '../../static/img/placeholder_dark.svg';
 import Input from '../UI/Input.file/Input.file';
-import { getImages, uploadImage } from '../../api/api_calls';
+import { getImages, predictText, uploadImage } from '../../api/api_calls';
 import { uid } from '../../utils/utils';
 import Button from '../UI/Button/Button';
 import Layout from '../Layout';
 import { useThemeContext } from '../../context/theme.context';
 import History from '../History/History';
 import { useDropzone } from 'react-dropzone';
+import { AnimatePresence } from 'framer-motion';
 
 interface IHistory {
   id: string;
   image: string;
   text: string;
+  name: string;
 }
-
 const ScanPage = () => {
   const [text, setText] = useState<string>();
   const [showWarn, setShowWarn] = useState(false);
@@ -53,9 +54,15 @@ const ScanPage = () => {
 
   const onScan = () => {
     if (file) {
-      uploadImage(file, uid()).then((res) => {
+      const fileId = uid();
+      uploadImage(file, fileId).then((res) => {
         console.log('File uploaded. Response: ', res);
-        //! add refetch of history
+        predictText(fileId).then((res) => {
+          console.log('RETURNED PREDICT: ', res);
+        });
+        getImages().then((res) => {
+          setHistory(res.data);
+        });
       });
     } else {
       setShowWarn(true);
@@ -68,18 +75,22 @@ const ScanPage = () => {
     }
   }, [file]);
 
-  //   useEffect(() => {
-  //     console.log(history);
-  //   }, [history]);
+  useEffect(() => {
+    getImages().then((res) => {
+      setHistory(res.data);
+    });
+  }, []);
 
   return (
     <Layout>
-      <main className={s.container}>
+      <main className={`${s.container} ${showHistory ? s.with_history : ''}`}>
+        {/* <AnimatePresence> */}
         {showHistory && (
           <History history={history} setShowHistory={setShowHistory} />
         )}
+        {/* </AnimatePresence> */}
         <div
-          className={`${s.input} ${isDragActive && s.drag_active}`}
+          className={`${s.input} ${isDragActive ? s.drag_active : ''}`}
           {...getRootProps()}
         >
           <div
@@ -109,6 +120,9 @@ const ScanPage = () => {
         <div className={s.arrow}>
           <Button onClick={() => onScan()}>Сканировать</Button>
           {showWarn && <div className={s.warn}>Выберите изображение</div>}
+          <div onClick={() => setShowHistory(true)} className={s.history_btn}>
+            История
+          </div>
         </div>
         <div className={s.output}>
           <div
@@ -126,9 +140,9 @@ const ScanPage = () => {
             )}
           </div>
         </div>
-        <div onClick={() => setShowHistory(true)} className={s.history_btn}>
+        {/* <div onClick={() => setShowHistory(true)} className={s.history_btn}>
           История
-        </div>
+        </div> */}
       </main>
     </Layout>
   );
