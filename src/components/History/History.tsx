@@ -84,7 +84,7 @@ const History = ({
           duration: 0.2,
           type: 'spring',
         }}
-        exit={{ x: [0, -150], opacity: [1] }}
+        exit={{ x: [0, -150], opacity: [1, 0.5, 0] }}
         className={s.container}
       >
         <div className={s.title_container}>
@@ -114,7 +114,7 @@ const History = ({
           duration: 0.2,
           type: 'spring',
         }}
-        exit={{ x: [0, -150], opacity: [1] }}
+        exit={{ x: [0, -150], opacity: [1, 0.5, 0] }}
         className={s.container}
       >
         <ClipLoader color="#757575" />
