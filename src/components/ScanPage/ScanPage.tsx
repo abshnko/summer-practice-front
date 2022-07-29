@@ -1,20 +1,28 @@
 import { useCallback, useEffect, useState } from 'react';
 import s from './ScanPage.module.scss';
-import arrow from '../../static/img/arrow.svg';
 import placeholder_light from '../../static/img/placeholder_light.svg';
 import placeholder_dark from '../../static/img/placeholder_dark.svg';
 import Input from '../UI/Input.file/Input.file';
-import { getImages, predictText, uploadImage } from '../../api/api_calls';
+import {
+  getImageById,
+  getImageInfoById,
+  getImages,
+  predictText,
+  uploadImage,
+} from '../../api/api_calls';
 import { uid } from '../../utils/utils';
 import Button from '../UI/Button/Button';
 import Layout from '../Layout';
 import { useThemeContext } from '../../context/theme.context';
 import History from '../History/History';
 import { useDropzone } from 'react-dropzone';
-import { AnimatePresence } from 'framer-motion';
+import copy from '../../static/img/copy.svg';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useForceUpdate } from '../../utils/hooks';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 interface IHistory {
-  id: string;
+  file_id: number;
   image: string;
   text: string;
   name: string;
@@ -23,10 +31,14 @@ const ScanPage = () => {
   const [text, setText] = useState<string>();
   const [showWarn, setShowWarn] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [historyGone, setHistoryGone] = useState(true);
+  const [textCopied, setTextCopied] = useState(false);
+  const [textLoading, setTextLoading] = useState(false);
   const [file, setFile] = useState<File>();
   const [filePreview, setFilePreview] = useState<string>();
   const { theme } = useThemeContext();
   const [history, setHistory] = useState<IHistory[]>([]);
+  const forceUpdate = useForceUpdate();
   const validator = () => {
     return undefined;
   };
@@ -54,11 +66,12 @@ const ScanPage = () => {
 
   const onScan = () => {
     if (file) {
+      setTextLoading(true);
       const fileId = uid();
       uploadImage(file, fileId).then((res) => {
-        console.log('File uploaded. Response: ', res);
         predictText(fileId).then((res) => {
-          console.log('RETURNED PREDICT: ', res);
+          setText(res.data.text);
+          setTextLoading(false);
         });
         getImages().then((res) => {
           setHistory(res.data);
@@ -67,6 +80,34 @@ const ScanPage = () => {
     } else {
       setShowWarn(true);
     }
+  };
+
+  useEffect(() => {
+    forceUpdate();
+  }, [history]);
+
+  useEffect(() => {
+    if (!showHistory) {
+      setTimeout(() => {
+        setHistoryGone(true);
+      }, 190);
+    } else {
+      setHistoryGone(false);
+    }
+  }, [showHistory]);
+
+  const selectFromHistory = (id: number) => {
+    getImageInfoById(id)
+      .then((res) => {
+        setText(res.data[0].text);
+      })
+      .catch((err) => {
+        setText('');
+      });
+    getImageById(id).then((res) => {
+      const blob = URL.createObjectURL(res.data);
+      setFilePreview(blob);
+    });
   };
 
   useEffect(() => {
@@ -81,24 +122,37 @@ const ScanPage = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (textCopied) {
+      setTimeout(() => {
+        setTextCopied(false);
+      }, 3000);
+    }
+  }, [textCopied]);
+
   return (
     <Layout>
-      <main className={`${s.container} ${showHistory ? s.with_history : ''}`}>
-        {/* <AnimatePresence> */}
-        {showHistory && (
-          <History history={history} setShowHistory={setShowHistory} />
-        )}
-        {/* </AnimatePresence> */}
+      <main className={`${s.container} ${!historyGone ? s.with_history : ''} `}>
+        <AnimatePresence>
+          {showHistory && (
+            <History
+              history={history}
+              setHistory={setHistory}
+              setShowHistory={setShowHistory}
+              selectFromHistory={selectFromHistory}
+            />
+          )}
+        </AnimatePresence>
         <div
           className={`${s.input} ${isDragActive ? s.drag_active : ''}`}
           {...getRootProps()}
         >
           <div
             className={`${s.border} ${s.border_dashed} ${
-              file && s.border_selected
+              file ? s.border_selected : ''
             }`}
           >
-            {!file ? (
+            {!file && !filePreview ? (
               <>
                 <img
                   className={s.img_placeholder}
@@ -127,22 +181,59 @@ const ScanPage = () => {
         <div className={s.output}>
           <div
             className={`${s.border} ${s.border_no_dash} ${
-              text && s.border_text
+              text ? s.border_text : ''
             }`}
           >
-            {!file ? (
+            {!file && !filePreview ? (
               <div className={s.placeholder_text}>
                 Здесь будет результат конвертации из рукописного текста в
                 печатный...
               </div>
+            ) : textLoading ? (
+              <ClipLoader color="#757575" />
             ) : (
-              text && <div className={s.return_text}>{text}</div>
+              text && (
+                <div className={s.return_text}>
+                  <div
+                    className={s.copy_icon_container}
+                    onClick={() => {
+                      navigator.clipboard.writeText(text);
+                      setTextCopied(true);
+                    }}
+                  >
+                    <AnimatePresence>
+                      {textCopied && (
+                        <motion.div
+                          key="copied"
+                          initial={{
+                            opacity: 0,
+                          }}
+                          animate={{
+                            opacity: 1,
+                            scale: [0.8, 0.9, 1, 1.1, 1, 0.9, 1],
+                          }}
+                          transition={{
+                            duration: 0.2,
+                            type: 'spring',
+                          }}
+                          exit={{
+                            opacity: [0.5, 0],
+                            x: [0, -100],
+                          }}
+                          className={s.copied_text}
+                        >
+                          Текст скопирован!
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                    <img className={s.copy_icon} src={copy} alt="" />
+                  </div>
+                  <div className={s.text}>{text}</div>
+                </div>
+              )
             )}
           </div>
         </div>
-        {/* <div onClick={() => setShowHistory(true)} className={s.history_btn}>
-          История
-        </div> */}
       </main>
     </Layout>
   );

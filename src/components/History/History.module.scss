@@ -7,6 +7,7 @@
   background-color: var(--background);
   z-index: 1;
   padding: 1rem;
+  overflow-y: auto;
 }
 
 .placeholder_cont {
@@ -40,20 +41,46 @@
   padding: 0 1rem 1rem;
   .item {
     color: var(--text-primary);
+    height: 120px;
+  }
+}
+
+.picture_container {
+  display: flex;
+  margin-top: 10px;
+  cursor: pointer;
+  gap: 10px;
+  height: inherit;
+
+  .picture {
+    width: 30%;
+    object-fit: contain;
+  }
+
+  .pic_text {
+    width: 70%;
+    height: inherit;
+    overflow-y: auto;
   }
 }
 
 @media (min-width: 800px) {
   .container {
-    min-width: 20%;
-    max-width: 30%;
+    width: 25%;
     position: static;
     box-shadow: var(--navbar-shadow) 0 0 8px inset;
     clip-path: inset(0 0px 0 4px);
     margin-right: 2rem;
+    margin-left: -2rem;
   }
 
   .close {
     cursor: pointer;
+  }
+}
+
+@media (min-width: 1600px) {
+  .container {
+    margin-left: -10rem;
   }
 }
