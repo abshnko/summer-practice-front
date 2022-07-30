@@ -55,6 +55,11 @@ const History = ({
   }, [history]);
 
   const fetchData = async () => {
+    return 0;
+    if (index < 1) {
+      return;
+    }
+
     if (index >= 7) {
       const { data } = await getNextImages(index - 7, 7);
       const newImages: IImage[] = [];
@@ -63,6 +68,17 @@ const History = ({
           const blob = URL.createObjectURL(res.data);
           newImages.push({ file_id: item.file_id, image: blob });
         });
+      });
+      index = index - 7;
+      setImages((prev) => [...prev, ...newImages]);
+    } else {
+      const { data } = await getNextImages(1, index);
+      const newImages: IImage[] = [];
+      data.forEach((item: any) => {
+        // getImageById(item.file_id).then((res) => {
+        const blob = URL.createObjectURL(item);
+        newImages.push({ file_id: item.file_id, image: blob });
+        // });
       });
       index = index - 7;
       setImages((prev) => [...prev, ...newImages]);
@@ -117,7 +133,9 @@ const History = ({
         exit={{ x: [0, -150], opacity: [1, 0.5, 0] }}
         className={s.container}
       >
-        <ClipLoader color="#757575" />
+        <div style={{ textAlign: 'center' }}>
+          <ClipLoader color="#757575" />
+        </div>
       </motion.div>
     );
   return (
@@ -146,16 +164,16 @@ const History = ({
       </div>
       <div className={s.items}>
         <InfiniteScroll
-          dataLength={history.length}
+          dataLength={1}
           next={fetchData}
           scrollableTarget="scrollableDiv"
-          hasMore={true}
+          hasMore={false}
           loader={<ClipLoader />}
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }
+          //   endMessage={
+          //     <p style={{ textAlign: 'center' }}>
+          //       <b>Yay! You have seen it all</b>
+          //     </p>
+          //   }
         >
           {images
             .slice(0)

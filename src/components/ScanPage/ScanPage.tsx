@@ -113,6 +113,7 @@ const ScanPage = () => {
   useEffect(() => {
     if (file) {
       setShowWarn(false);
+      setText('');
     }
   }, [file]);
 
