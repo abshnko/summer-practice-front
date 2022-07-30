@@ -7,7 +7,7 @@
   align-items: center;
   background-color: var(--background);
   padding: 2rem;
-  margin-bottom: 7rem;
+  padding-bottom: 7rem;
 }
 
 .input,
@@ -150,7 +150,7 @@
     padding-inline: 2rem;
     justify-content: space-around;
     height: calc(100vh - 60px);
-    margin-bottom: 0;
+    padding-bottom: 0;
   }
   .with_history {
     justify-content: left !important;
